@@ -1,0 +1,59 @@
+# my_project/experiment.yaml
+EXPERIMENT:
+  NAME: "TMI_Biomarker_Exps"
+  # MODE: "Train"
+  MODE: "TestBest-generatePreds"
+  TRIAL: "Test_T1"
+  DATASET: "LSU-LargeV2-Dataset"
+
+SYSTEM:
+  # NUM_GPUS: 2
+  NUM_GPUS: [1]
+
+DATA:
+  RANDOM_SPLIT_TRIAL: "BMI-R1"
+  LABEL_DICT: "user_label_ggare_2.json"
+  TEST_SPLIT: "0.3"
+  TRAIN_FOLDS: ["A", "B", "C"]
+  VAL_FOLDS: ["A"]
+  TEST_FOLDS: ["D"]
+  # No of classes
+  NUM_CLASS: 4
+  # Label names for reports
+  LABEL_NAMES: [ 'score-0', 'score-1', 'score-2', 'score-3', ]
+  # Label features to use
+  LABEL_FEATURES: ['lung-severity', ]
+  # No of clip-segments to evaluate per video
+  NO_MULTI_CLIP: 4 #3
+  # IMAGE_RESIZE: [416, 416]
+
+  # #Input masks
+  # NUM_MASKS: 2
+  # MASK1: "subq_mask"
+  # MASK2: "merlin_short_mask" #"merlin_mask"
+  
+VIDEO_DATA:
+  CLIP_WIDTH: 15 #16
+  # TEMP_SAMPLING_METHOD: "rand_temp_sampling"
+  TYPE: "crop" #"mask_subq" #"crop"
+
+MODEL:
+  PRETRAIN: "imagenet"
+
+SOLVER:
+  EPOCHS: 100
+  # EPOCHS: 10
+  # EPOCHS: 1
+  INIT_LR: 0.0001 #0.001
+  LOSS_FUNC: cross_entropy
+  OPTIMIZER: adam
+  # TEST_BATCH_SIZE: 64
+  # TRAIN_BATCH_SIZE: 32
+  TEST_BATCH_SIZE: 6 #8 - Using smaller batch size of 6 with larger input image (416x416 px)
+  TRAIN_BATCH_SIZE: 4
+
+CAM:
+  ENABLE: False
+
+LOGGER:
+  WANDB: "online"

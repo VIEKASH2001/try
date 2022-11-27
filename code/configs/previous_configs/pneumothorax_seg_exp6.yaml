@@ -1,0 +1,53 @@
+# my_project/experiment.yaml
+EXPERIMENT:
+  NAME: "Pneumothorax_Exps"
+  DATASET: "DARPA-Seg-Dataset"
+  MODE: "Train"
+  # MODE: "Test"
+  TRIAL: "img_drop_TmaxDropSavg"
+  MODEL: "tsm_seg"
+SYSTEM:
+  # NUM_GPUS: 2
+  NUM_GPUS: [1]
+
+DATA:
+  LABEL_DICT: "darpa_labels.json"
+  # No of classes
+  NUM_CLASS: 2
+  # Label names for reports
+  LABEL_NAMES: [ 'no-sliding', 'sliding', ]
+  # Label features to use
+  LABEL_FEATURES: ['sliding', ]
+  # No of clip-segments to evaluate per video
+  NO_MULTI_CLIP: 4 #3
+
+  #Input masks
+  # NUM_MASKS: 2
+  # MASK1: "subq_mask"
+  # MASK2: "merlin_short_mask" #"merlin_mask"
+  
+  SEG_LABEL: "crop_seg_lb_rct" #"crop_seg_rct"
+  SEG_NUM_CLASS: 6
+  # Seg Label names for reports
+  SEG_LABEL_NAMES: [ 'bck-grd', 'pl-pneumo', 'pl-healthy', 'vessel', 'chest-wall', 'rib', ]
+  
+VIDEO_DATA:
+  CLIP_WIDTH: 15 #16
+  TYPE: "crop_image_rct" #"pleural_band" #"crop_image_rct" # "linear_probe_under_pleural_line" 
+
+MODEL:
+  PRETRAIN: "imagenet"
+SOLVER:
+  EPOCHS: 100
+  # EPOCHS: 10
+  # EPOCHS: 1
+  INIT_LR: 0.0001 #0.001
+  LOSS_FUNC: cross_entropy+seg_cross_entropy #cross_entropy
+  OPTIMIZER: adam
+  # TEST_BATCH_SIZE: 64
+  # TRAIN_BATCH_SIZE: 32
+  TEST_BATCH_SIZE: 8
+  TRAIN_BATCH_SIZE: 4
+
+LOGGER:
+  WANDB: "online"

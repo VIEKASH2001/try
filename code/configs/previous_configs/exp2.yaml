@@ -1,0 +1,27 @@
+# my_project/experiment.yaml
+EXPERIMENT:
+  NAME: "Baseline_Exps"
+  MODE: "Train"
+  # MODE: "Test"
+  # TRIAL: "PlMl"
+  TRIAL: "PlMl_img_drop_TmaxDropSavg"
+SYSTEM:
+  # NUM_GPUS: 2
+  NUM_GPUS: [0]
+MODEL:
+  PRETRAIN: "imagenet"
+SOLVER:
+  EPOCHS: 100
+  # EPOCHS: 10
+  # EPOCHS: 1
+  INIT_LR: 0.001
+  LOSS_FUNC: cross_entropy
+  OPTIMIZER: adam
+  # TEST_BATCH_SIZE: 64
+  # TRAIN_BATCH_SIZE: 32
+  TEST_BATCH_SIZE: 8
+  TRAIN_BATCH_SIZE: 4
+VIDEO_DATA:
+  TYPE: "linear_probe_under_pleural_line" 
+LOGGER:
+  WANDB: "online"

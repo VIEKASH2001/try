@@ -1,0 +1,67 @@
+# my_project/experiment.yaml
+EXPERIMENT:
+  NAME: "tmp"
+  DATASET: "LSU-Pneumothorax-Dataset"
+  # MODE: "Train"
+  # MODE: "Test"
+  MODE: "Test-videos"
+  # TRIAL: "TmaxDropSavgCls"
+  TRIAL: "SavgDropTmaxCls"
+SYSTEM:
+  # NUM_GPUS: 2
+  NUM_GPUS: [0]
+
+DATA:
+  LABEL_DICT: "darpa_labels.json"
+  # No of classes
+  NUM_CLASS: 2
+  # Label names for reports
+  LABEL_NAMES: [ 'no-sliding', 'sliding', ]
+  # Label features to use
+  LABEL_FEATURES: ['sliding', ]
+  # No of clip-segments to evaluate per video
+  NO_MULTI_CLIP: 3
+  
+  # TRAIN_FOLDS: ["A", "C"]
+  # VAL_FOLDS: ["B"]
+  TRAIN_FOLDS: ["A", "B"]
+  VAL_FOLDS: ["C"]
+
+
+VIDEO_TEST_DATA:
+  LABEL_DICT: [
+    "NoSliding/162_1",
+    "NoSliding/162_2",
+    "NoSliding/162_3",
+    "NoSliding/162_4",
+    "NoSliding/162_5",
+    "NoSliding/162_6",
+    "Sliding/148(08.16.21)L1-192-7(C19, cholecystitis)",
+    # "Sliding/148(08.16.21)L1-C19-cardiac",
+    # "Sliding148(08.16.21)L1-C19-lung",
+    "Sliding/148(08.16.21)R1-192-7(C19, cholecystitis)",
+    # "Sliding/148(08.16.21)R1-C19-cardiac",
+    # "Sliding/148(08.16.21)R1-C19-lung",
+    "Sliding/73(04.25.21)L1-182-6(C19, A-fib)",
+    "Sliding/73(04.25.21)R1-182-6(C19, A-fib)",
+    ]
+
+MODEL:
+  PRETRAIN: "imagenet"
+  # ST_CONCENSUS: "TmaxDropSavgCls"
+  ST_CONCENSUS: "SavgDropTmaxCls"
+
+
+SOLVER:
+  EPOCHS: 100
+  # EPOCHS: 10
+  # EPOCHS: 1
+  INIT_LR: 0.001
+  LOSS_FUNC: cross_entropy
+  OPTIMIZER: adam
+  # TEST_BATCH_SIZE: 64
+  # TRAIN_BATCH_SIZE: 32
+  TEST_BATCH_SIZE: 8
+  TRAIN_BATCH_SIZE: 4
+LOGGER:
+  WANDB: "online"

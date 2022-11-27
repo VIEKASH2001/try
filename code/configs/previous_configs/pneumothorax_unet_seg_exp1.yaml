@@ -1,0 +1,74 @@
+# my_project/experiment.yaml
+EXPERIMENT:
+  NAME: "Pneumothorax_Exps"
+  DATASET: "DARPA-Seg-Dataset"
+  MODE: "Train"
+  # MODE: "Test"
+  TRIAL: "img_drop_TmaxDropSavg"
+  MODEL: "tsm_unet_seg"
+SYSTEM:
+  # NUM_GPUS: 2
+  NUM_GPUS: [1]
+
+DATA:
+  LABEL_DICT: "darpa_labels.json"
+  # No of classes
+  NUM_CLASS: 2
+  # Label names for reports
+  LABEL_NAMES: [ 'no-sliding', 'sliding', ]
+  # Label features to use
+  LABEL_FEATURES: ['sliding', ]
+  # No of clip-segments to evaluate per video
+  NO_MULTI_CLIP: 4 #3
+
+  #Input masks
+  # NUM_MASKS: 2
+  # MASK1: "subq_mask"
+  # MASK2: "merlin_short_mask" #"merlin_mask"
+  
+  SEG_LABEL: "crop_seg_lb_rct" #"crop_seg_rct"
+  SEG_NUM_CLASS: 4 #6
+  SEG_IMAGE_RESIZE: [56, 56]
+  # Seg Label names for reports
+  # SEG_LABEL_NAMES: [ 'bck-grd', 'pl-pneumo', 'pl-healthy', 'vessel', 'chest-wall', 'rib', ]
+  SEG_LABEL_NAMES: [ 'bck-grd', 'pleura', 'chest-wall', 'rib', ]
+  # Segmentation Label color mapping for saving
+  SEG_LABEL_COLORS_DICT: [ 
+                            [0, 0, 0], #0 #000000 - Background
+                            # [242, 5, 246], #1 #F205F6 - pleural line pneumothorax
+                            [255, 0, 0], #2 #FF0000 - pleural line normal
+                            # [0, 255, 0], #3 #00FF00 - vessel
+                            [42, 125, 209], #4 #2A7DD1 - chest wall muscle
+                            # 4: (42, 135, 209), #4 #2A7DD1
+                            [221, 255, 51], #5 #DDFF33 - rib bone
+                            # 5: (209, 135, 42), #5
+                        ]
+
+VIDEO_DATA:
+  CLIP_WIDTH: 15 #16
+  TYPE: "crop_image_rct" #"pleural_band" #"crop_image_rct" # "linear_probe_under_pleural_line" 
+  # TEMP_SAMPLING_METHOD: "rand_temp_sampling"
+
+MODEL:
+  PRETRAIN: "imagenet"
+  ST_CONCENSUS: "SegAttentionPooling"
+  # PRETRAIN_SUB: "imagenet"
+  PRETRAIN_FREEZE: "Pneumothorax_Exps/unetSm_DARPA-Seg-Dataset_Frame_Seg_4cls_T1_A/checkpoints/epoch=1-step=969.ckpt"
+
+SOLVER:
+  EPOCHS: 100 #50
+  # EPOCHS: 10
+  # EPOCHS: 1
+  INIT_LR: 0.0001 #0.001
+  LOSS_FUNC: cross_entropy #cross_entropy+seg_cross_entropy #cross_entropy
+  OPTIMIZER: adam+freeze #adam
+  # TEST_BATCH_SIZE: 64
+  # TRAIN_BATCH_SIZE: 32
+  TEST_BATCH_SIZE: 8
+  TRAIN_BATCH_SIZE: 4
+
+CAM:
+  ENABLE: False
+
+LOGGER:
+  WANDB: "online"

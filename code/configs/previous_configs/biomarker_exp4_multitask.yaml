@@ -1,0 +1,66 @@
+# my_project/experiment.yaml
+EXPERIMENT:
+  NAME: "Biomarker_Exps_R3"
+  MODE: "Train"
+  # MODE: "Test"
+  TRIAL: "Test_T1"
+SYSTEM:
+  # NUM_GPUS: 2
+  NUM_GPUS: [1]
+
+DATA:
+  RANDOM_SPLIT_TRIAL: "R3"
+  TEST_SPLIT: "0.3"
+  # No of classes
+  NUM_CLASS: 4
+  # No of classes
+  NUM2_CLASS: 25
+  # Label names for reports
+  LABEL_NAMES: [ 'score-0', 'score-1', 'score-2', 'score-3', ]
+  # Label features to use
+  LABEL_FEATURES: ['lung-severity', ]
+  # Label names for reports
+  LABEL2_NAMES: [ 
+                  'al-none', 'al-weak', 'al-bold', 'al-*also* stacked', 'al-*also* wide (> 2cm)',
+                  'bl-none', 'bl-few (1-3)', 'bl-some (4-5)', 'bl-many|coalescing', "bl-\"white\" (no striations)",   
+                  'pi-none', 'pi-<5mm (single)', 'pi-<5mm (multiple)', 'pi-5-10mm', 'pi->10mm', 
+                  'pb-none', 'pb-<5mm (single)', 'pb-<5mm (multiple)', 'pb-5-10mm', 'pb->10mm',
+                  'cn-none', 'cn-<5mm (single)', 'cn-<5mm (multiple)', 'cn-5-10mm', 'cn->10mm',
+                ]
+  # Label features to use
+  LABEL2_FEATURES: ['alines', 'blines', 'pleural_break', 'pleural_indent', 'consolidation', ]
+  # No of clip-segments to evaluate per video
+  NO_MULTI_CLIP: 4 #3
+  # IMAGE_RESIZE: [416, 416]
+
+  # #Input masks
+  # NUM_MASKS: 2
+  # MASK1: "subq_mask"
+  # MASK2: "merlin_short_mask" #"merlin_mask"
+  
+VIDEO_DATA:
+  CLIP_WIDTH: 15 #16
+  # TEMP_SAMPLING_METHOD: "rand_temp_sampling"
+  TYPE: "linear_probe_under_pleural_line" 
+
+MODEL:
+  PRETRAIN: "imagenet"
+  MULTI_TASK: True
+
+SOLVER:
+  EPOCHS: 100
+  # EPOCHS: 10
+  # EPOCHS: 1
+  INIT_LR: 0.0001 #0.001
+  LOSS_FUNC: cross_entropy+binary_cross_entropy #binary_cross_entropy
+  OPTIMIZER: adam
+  # TEST_BATCH_SIZE: 64
+  # TRAIN_BATCH_SIZE: 32
+  TEST_BATCH_SIZE: 6 #8 - Using smaller batch size of 6 with larger input image (416x416 px)
+  TRAIN_BATCH_SIZE: 4
+
+CAM:
+  ENABLE: False
+
+LOGGER:
+  WANDB: "online"
